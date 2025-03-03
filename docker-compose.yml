@@ -22,11 +22,21 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+  # # Create a topic with 1 partition and 1 replica
+  # init-kafka:
+  #   image: bitnami/kafka:latest
+  #   command: >
+  #     sh -c "until kafka-topics.sh --list --bootstrap-server kafka:9092; do echo 'Waiting for Kafka...'; sleep 2; done && kafka-topics.sh --create --topic report-tasks --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1 || true"
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
 
+
+  # # Create a topic with 10 partitions and 1 replica
   init-kafka:
     image: bitnami/kafka:latest
     command: >
-      sh -c "sleep 10 && kafka-topics.sh --create --topic test-topic --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1 || true"
+      sh -c "until kafka-topics.sh --list --bootstrap-server kafka:9092; do echo 'Waiting for Kafka...'; sleep 2; done && kafka-topics.sh --create --topic report-tasks --bootstrap-server kafka:9092 --partitions 10 --replication-factor 1 || true"
     depends_on:
       kafka:
         condition: service_healthy
