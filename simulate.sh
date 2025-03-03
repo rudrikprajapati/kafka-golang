@@ -1,8 +1,8 @@
-#!/bin/bash
-echo "Starting 500 user simulation..."
+REQUESTS=${1:-500}  # Default to 500 if no argument
+echo "Starting $REQUESTS user simulation..."
 start_time=$(date +%s)
 
-for i in {1..500}
+for i in $(seq 1 $REQUESTS)
 do
   curl -X POST -H "Content-Type: application/json" \
     -d "{\"user_id\": \"user$i\", \"data\": \"data$i\"}" \
